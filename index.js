@@ -21,7 +21,6 @@ var lncbut = document.getElementsByTagName('body')[0];
 var lncbutDiv = document.createElement("div");
 
 lncbutDiv.innerHTML = '<div class="right-side" style="padding:10px;!important; width:300px;!important; height:80px;!important; background-color:white;!important; ">  <div class="new" style="color:#16171a;!important">Registrar Venda</div>     <svg class="arrow" xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 451.846 451.847"><path d="M345.441 248.292L151.154 442.573c-12.359 12.365-32.397 12.365-44.75 0-12.354-12.354-12.354-32.391 0-44.744L278.318 225.92 106.409 54.017c-12.354-12.359-12.354-32.394 0-44.748 12.354-12.359 32.391-12.359 44.75 0l194.287 194.284c6.177 6.18 9.262 14.271 9.262 22.366 0 8.099-3.091 16.196-9.267 22.373z" data-original="#000000" class="active-path" data-old_color="#000000" fill="#cfcfcf"/></svg>  </div>';
-// lncbutDiv.innerHTML = '<button class=\"button\">Registrar Venda</div>';
 
 lncbutDiv.id = 'pg';
 lncbutDiv.addEventListener("click", function (e) {
@@ -53,8 +52,71 @@ lncbutDiv.addEventListener("click", function (e) {
     var evt = document.createEvent("CustomEvent");
     evt.initCustomEvent("registerSell", true, true, map);
     document.dispatchEvent(evt);
+});
 
+var btnGenerateBillet = document.createElement("div");
 
+btnGenerateBillet.innerHTML = '<div class="right-side" style="padding:10px;!important; width:300px;!important; height:80px;!important; background-color:white;!important; ">  <div class="new" style="color:#16171a;!important">Gerar Boleto</div>     <svg class="arrow" xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 451.846 451.847"><path d="M345.441 248.292L151.154 442.573c-12.359 12.365-32.397 12.365-44.75 0-12.354-12.354-12.354-32.391 0-44.744L278.318 225.92 106.409 54.017c-12.354-12.359-12.354-32.394 0-44.748 12.354-12.359 32.391-12.359 44.75 0l194.287 194.284c6.177 6.18 9.262 14.271 9.262 22.366 0 8.099-3.091 16.196-9.267 22.373z" data-original="#000000" class="active-path" data-old_color="#000000" fill="#cfcfcf"/></svg>  </div>';
+
+btnGenerateBillet.id = 'billet';
+btnGenerateBillet.addEventListener("click", function (e) {
+    // document.getElementById('billet').style.visibility = 'hidden';
+
+    var cpf = prompt("Qual CPF?", "");
+
+    if (cpf == null || cpf == "") {
+        txt = "User cancelled the prompt.";
+        return;
+    } else {
+        console.log(cpf);
+    }
+
+    var value = prompt("Qual valor da venda?", "0.00");
+
+    if (value == null || value == "") {
+        txt = "User cancelled the prompt.";
+        return;
+    } else {
+        console.log(value);
+    }
+
+    var name = prompt("Qual o nome?", "");
+
+    if (name == null || name == "") {
+        txt = "User cancelled the prompt.";
+        return;
+    } else {
+        console.log(name);
+    }
+
+    value = value.replace(".", "").replace(",", "") + "00";
+
+    var map = new Object();
+    map["value"] = value;
+    map["name"] = name;
+    map["cpf"] = cpf;
+
+    var data = e.detail;
+    console.log("received " + data);
+    var billetURL = 'https://hacka-getnet-time-18.herokuapp.com/getBoleto?name=' + name + '&cpf=' + cpf + '&price=' + value
+    console.log(billetURL);
+
+    function callback() {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+                result = xhr.responseText;
+                console.log(result);
+
+                let url = JSON.parse(result);
+                alert("Boleto gerado, copie o link e envie ao cliente: " + url.link);
+            }
+        }
+    };
+
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", billetURL, true);
+    xhr.onreadystatechange = callback;
+    xhr.send();
 });
 
 var stylelancbut = "";
@@ -167,8 +229,16 @@ const broadcast = function (node) {
             var msg = spans[0].innerHTML;
 
             if (!processedMsgSet.has(msg) && msg.includes("ok, pode registrar a venda")) {
+                console.log("REGISTRAR VENDA");
                 el.appendChild(lncbutDiv);
                 document.getElementById('pg').style.visibility = 'visible';
+                processedMsgSet.add(msg);
+            }
+
+            if (!processedMsgSet.has(msg) && msg.includes("gerar boleto")) {
+                console.log("GERAR BOLETO")
+                el.appendChild(btnGenerateBillet);
+                document.getElementById('billet').style.visibility = 'visible';
                 processedMsgSet.add(msg);
             }
         }
@@ -248,7 +318,7 @@ function addActivateBtn() {
     startBtnDiv.id = 'btnOpenWhatsAllApp';
     startBtnDiv.addEventListener("click", function (e) {
 
-        var map = new Object(); 
+        var map = new Object();
         map["user"] = currentUserSet.replace(/\s/g, '');;
         var evt = document.createEvent("CustomEvent");
         evt.initCustomEvent("getSells", true, true, map);
