@@ -5,8 +5,6 @@ var processedOldMsgSet = new Set();
 
 var currentUserSet = "";
 
-// var resumoHtml = '<div id="resumo" style="padding-top: 10px; border-top: 2px solid #CCC;background: #232427;color:#fff;"><p style="font-size: 14px;margin-left: 10px;font-weight: bold; margin-bottom: 10px;">Meu Orçamento Mensal:</p><p style="font-size: 14px;margin-left: 10px;">Seu ganho médio mensal: <span style="float:right;margin-right: 20px;">R$4.111,89</span></p><p style="margin-left: 10px;"><span style="display: block;  background: #09d261;  width: 50%;height: 10px;"></span></p><p style="font-size: 14px;margin-left: 10px;"><br>Você gastou uma média de: <span style="float:right;margin-right: 20px;">R$4.492,70</span> </p><p style="margin-left: 10px;margin-bottom: 15px;"><span style="display: block;background: #ef4343;width: 60%;height: 10px;"></span></p></div>';
-
 var styleToolbar = "<style>@import url('https://fonts.googleapis.com/css?family=Lexend+Deca&display=swap'); .total {  text-align: center; font-size: 30px; font-family: 'Lexend Deca', sans-serif; margin-left: 20px; display: flex; align-items: center; overflow: hidden; cursor: pointer; justify-content: space-between; white-space: nowrap; transition: 0.3s;}</style>";
 
 var toolbar = styleToolbar + '<div style="background: #232427;height: 150px;z-index: 999999999;">' +
@@ -47,7 +45,7 @@ lncbutDiv.addEventListener("click", function (e) {
         console.log(value);
     }
 
-    var map = new Object(); // or var map = {};
+    var map = new Object();
     map["value"] = value;
     map["product"] = nameProduct;
     map["user"] = currentUserSet.replace(/\s/g, '');
@@ -56,11 +54,9 @@ lncbutDiv.addEventListener("click", function (e) {
     evt.initCustomEvent("registerSell", true, true, map);
     document.dispatchEvent(evt);
 
-    // createDOM();
-    // setupContainerEventListeners();
-    // this.classList.add('hide');
+
 });
-//
+
 var stylelancbut = "";
 stylelancbut += "#pg { height: 40px; border-radius: 50px; width: 60px; background-color: #43d854;  ";
 stylelancbut += "position: fixed; top: 15px; left: 15px; z-index: 99999; box-shadow: 0 1px 1px 0 rgba(0,0,0,0.06), 0 2px 5px 0 rgba(0,0,0,0.2);}";
@@ -69,7 +65,6 @@ stylelancbut += "#pg.hide { display: none; }";
 stylelancbut += "#pg.titleText {text-align: center; font-size: 13px; padding-top: 14px; color: white; }";
 var styleElbtn = document.createElement("style");
 styleElbtn.innerHTML = stylelancbut;
-
 
 
 // Create the XHR object.
@@ -103,26 +98,6 @@ function makeCorsRequest(text) {
     if (!xhr) {
         alert('CORS not supported');
         return;
-
-        // Response handlers.
-        xhr.onload = function () {
-            var text = xhr.responseText;
-            var title = getTitle(text);
-            console.log('Response from CORS request to ' + url + ': ' + text);
-        };
-
-        xhr.onerror = function () {
-            alert('Woops, there was an error making the request.');
-        };
-
-        // xhr.setRequestHeader("Content-type", "application/json");
-        // xhr.setRequestHeader("Authorization", "Basic " + Nzg0Zjk5MjMtMDA4Ny00NDFjLWIxMzEtNDgwYjIwMDBiM2E2OjFFUjZNUVU3NFFzQg==);
-        var data = JSON.stringify({
-            "text": text
-        });
-
-
-        xhr.send(data);
     }
 }
 
@@ -132,17 +107,9 @@ var didInsert = false;
 var didInsertSide = false;
 
 const broadcast = function (node) {
-    console.log("in");
-
-    // if (didInsertSide == false) {
-    //     document.getElementById("side").insertAdjacentHTML('beforeend', resumoHtml)
-    //     didInsertSide = true;
-    // }
+    console.log("broadcast is running");
 
     if (document.getElementById("main") && !document.getElementById("toolbar") && didInsert == false) {
-
-        //Add Buttuns
-
         didInsert = true;
         const userName = document.getElementById("main").getElementsByClassName("_3ko75 _5h6Y_ _3Whw5")[0].innerHTML;
         console.log(userName);
@@ -172,9 +139,6 @@ const broadcast = function (node) {
 
         addActivateBtn();
         addSellButton();
-        // var script = ;
-        // var scriptLink =document.createElement();
-        // console.log("-");
         document.head.innerHTML = document.head.innerHTML + " <style> .button {    background-color: #444AB0; /* Green */    border: none;    color: white;    padding: 15px 32px;    text-align: center;    text-decoration: none;    display: inline-block;    font-size: 16px;    margin: 4px 2px;    cursor: pointer;}</style> ";
         // console.log(document.head);
 
@@ -200,9 +164,7 @@ const broadcast = function (node) {
     chatText.forEach(function (el) {
         var spans = [...el.getElementsByTagName("span")];
         if (spans[0] != undefined) {
-            // console.log(spans[0]);
             var msg = spans[0].innerHTML;
-            // console.log(msg);
 
             if (!processedMsgSet.has(msg) && msg.includes("ok, pode registrar a venda")) {
                 el.appendChild(lncbutDiv);
@@ -242,7 +204,6 @@ function addSellButton() {
     startBtnDiv.innerHTML = '<div class="titleText">' + styleSell + buttonSell + '</div>';
     startBtnDiv.id = 'sellbuttonmrk';
     startBtnDiv.addEventListener("click", function (e) {
-        // alert("vamo pagar tudo!");
         var nameProduct = prompt("Qual produto vendido?", "");
 
         if (nameProduct == null || nameProduct == "") {
@@ -261,18 +222,13 @@ function addSellButton() {
             console.log(value);
         }
 
-        var map = new Object(); // or var map = {};
+        var map = new Object();
         map["value"] = value;
         map["product"] = nameProduct;
         map["user"] = currentUserSet.replace(/\s/g, '');
-        // updated: this works with Chrome 30:
         var evt = document.createEvent("CustomEvent");
         evt.initCustomEvent("registerSell", true, true, map);
         document.dispatchEvent(evt);
-
-        // createDOM();
-        // setupContainerEventListeners();
-        // this.classList.add('hide');
     });
 
     body.appendChild(startBtnDiv);
@@ -292,18 +248,11 @@ function addActivateBtn() {
     startBtnDiv.id = 'btnOpenWhatsAllApp';
     startBtnDiv.addEventListener("click", function (e) {
 
-        var map = new Object(); // or var map = {};
-        // map["value"]="R$400,00";
+        var map = new Object(); 
         map["user"] = currentUserSet.replace(/\s/g, '');;
-        // updated: this works with Chrome 30:
         var evt = document.createEvent("CustomEvent");
         evt.initCustomEvent("getSells", true, true, map);
         document.dispatchEvent(evt);
-
-        // alert("TESTE");
-        // createDOM();
-        // setupContainerEventListeners();
-        // this.classList.add('hide');
     });
 
     var style = "";
@@ -315,7 +264,6 @@ function addActivateBtn() {
     var styleEl = document.createElement("style");
     styleEl.innerHTML = style;
     body.appendChild(startBtnDiv);
-    // body.appendChild(styleEl);
 }
 
 const observer = new MutationObserver(function (mutations) {
@@ -330,7 +278,3 @@ const config = {
 }
 
 observer.observe(document.body, config);
-
-
-
-// broadcast(document.body);
