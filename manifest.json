@@ -1,0 +1,27 @@
+{
+  "name": "FacilitAMEI",
+  "version": "0.0.1",
+  "author": "",
+  "manifest_version": 21,
+  "description": "Sistema de Gestão No whatsapp",
+  "permissions": [
+    "https://web.whatsapp.com/*"
+  ],
+  "web_accessible_resources":["/toolbar.html", "locales/*", "/popup.js", "/index.js"
+  ],
+  "browser_action": {
+  },
+  "background": {
+  "service_worker": ["background.js"]
+  },
+  "homepage_url": "http://Google.com.br",
+  "content_scripts": [
+    {
+          "matches": [ "https://web.whatsapp.com/*"],
+          "js" : [ "plugin.js"],
+          "run_at" : "document_idle",
+          "all_frames" : false
+    }
+  ]
+}
+
