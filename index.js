@@ -4,10 +4,15 @@ var processedMsgSet = new Set();
 var processedOldMsgSet = new Set();
 
 var currentUserSet = "";
+var countWatson = 0;
+
+var cssNotification = '<style>#modalContainer {    background-color:rgba(0, 0, 0, 0.3);    position:absolute;top:0;    width:100%;    height:100%;    left:0px;    z-index:10000;color:black;    background-image:url(tp.png); /* required by MSIE to prevent actions on lower z-index elements */}#alertBox {    position:relative;    width:33%;    min-height:100px;max-height:400px;    margin-top:50px;    border:1px solid #fff;    background-color:#fff;    background-repeat:no-repeat;top:30%;}#modalContainer > #alertBox {    position:fixed;}#alertBox h1 {    margin:0;    font:bold 1em Raleway,arial;    background-color:rgba(77, 166, 71, 0.3);    color:#FFF;    border-bottom:1px solid rgba(77, 166, 71, 0.3);    padding:10px 0 10px 5px;}#alertBox p {    height:50px;    padding-left:5px;padding-top:30px;text-align:center;color:black;!important;vertical-align:middle;}#alertBox #closeBtn {    display:block;    position:relative;color:black;!important;    margin:10px auto 10px auto;    padding:7px;    border:0 none;    width:70px;    text-transform:uppercase;    text-align:center;    color:#FFF;    background-color:rgba(77, 166, 71, 0.3);    border-radius: 0px;    text-decoration:none;outline:0!important;}/* unrelated styles */#mContainer {    position:relative;    width:600px;    margin:auto;    padding:5px;    color:black;!important;    border-top:2px solid #fff;    border-bottom:2px solid #fff;}h1,h2 {    margin:0;    padding:4px;}code {    font-size:1.2em;    color:#069;}#credits {    position:relative;    margin:25px auto 0px auto;    width:350px;     font:0.7em verdana;    border-top:1px solid #000;    border-bottom:1px solid #000;    height:90px;    padding-top:4px;}#credits img {    float:left;    margin:5px 10px 5px 0px;    border:1px solid #000000;    width:80px;    height:79px;}.important {    background-color:#F5FCC8;    padding:2px;}@media (max-width: 600px) {#alertBox {    position:relative;    width:90%;top:30%;}</style>';
+
+
 
 var styleToolbar = "<style>@import url('https://fonts.googleapis.com/css?family=Lexend+Deca&display=swap'); .total {  text-align: center; font-size: 30px; font-family: 'Lexend Deca', sans-serif; margin-left: 20px; display: flex; align-items: center; overflow: hidden; cursor: pointer; justify-content: space-between; white-space: nowrap; transition: 0.3s;}</style>";
 
-var toolbar = styleToolbar + '<div style="background: #232427;height: 150px;z-index: 999999999;">' +
+var toolbar = cssNotification + styleToolbar + '<div style="background: #232427;height: 150px;z-index: 999999999;">' +
     '<ul id="toolbar" style=" margin-top: 20px;font-size: 16px; color: #fff;">' +
     '<li class="menu1" style="float: left;margin-left: 25px;margin-right: 30px;" title="#TITLEMENU1">' +
     '<img style="width: 80px;margin-top: 40px; margin-left:10px;" id="imageLogo" src="https://www.hackathongetnet.com.br/wp-content/themes/getnet/img/logo.png" /></li>' +
@@ -241,6 +246,33 @@ const broadcast = function (node) {
                 document.getElementById('billet').style.visibility = 'visible';
                 processedMsgSet.add(msg);
             }
+
+            if (!processedMsgSet.has(msg) && (msg.includes("nota fiscal") || msg.includes("camiseta") || msg.includes("tenis") || msg.includes("garantia"))) {
+                if (countWatson < 3) {
+                    function callback() {
+                        if (xhr.readyState === XMLHttpRequest.DONE) {
+                            if (xhr.status === 200) {
+                                result = xhr.responseText;
+                                console.log(result);
+
+                                let response = JSON.parse(result);
+                                if (response.output != undefined && response.output != "I didn't understand. You can try rephrasing.") {
+                                    alert("" + response.output);
+                                    countWatson++;
+                                }
+                            }
+                        }
+                    };
+
+                    let watsonURL = "https://hacka-getnet-time-18.herokuapp.com/conversation/?text=" + msg;
+
+                    var xhr = new XMLHttpRequest();
+                    xhr.open("GET", watsonURL, true);
+                    xhr.onreadystatechange = callback;
+                    xhr.send();
+
+                }
+            }
         }
     });
 };
@@ -348,3 +380,57 @@ const config = {
 }
 
 observer.observe(document.body, config);
+
+
+var ALERT_TITLE = "Oops!";
+var ALERT_BUTTON_TEXT = "Ok";
+
+if (document.getElementById) {
+    window.alert = function (txt) {
+        createCustomAlert(txt);
+    }
+}
+
+function createCustomAlert(txt) {
+    d = document;
+
+    if (d.getElementById("modalContainer")) return;
+
+    mObj = d.getElementsByTagName("body")[0].appendChild(d.createElement("div"));
+    mObj.id = "modalContainer";
+    mObj.style.height = d.documentElement.scrollHeight + "px";
+
+    alertObj = mObj.appendChild(d.createElement("div"));
+    alertObj.id = "alertBox";
+    if (d.all && !window.opera) alertObj.style.top = document.documentElement.scrollTop + "px";
+    alertObj.style.left = (d.documentElement.scrollWidth - alertObj.offsetWidth) / 2 + "px";
+    alertObj.style.visiblity = "visible";
+
+    h1 = alertObj.appendChild(d.createElement("h1"));
+    h1.appendChild(d.createTextNode(ALERT_TITLE));
+
+    msg = alertObj.appendChild(d.createElement("p"));
+    //msg.appendChild(d.createTextNode(txt));
+    msg.innerHTML = txt;
+
+    btn = alertObj.appendChild(d.createElement("a"));
+    btn.id = "closeBtn";
+    btn.appendChild(d.createTextNode(ALERT_BUTTON_TEXT));
+    btn.href = "#";
+    btn.focus();
+    btn.onclick = function () {
+        removeCustomAlert();
+        return false;
+    }
+
+    alertObj.style.display = "block";
+
+}
+
+function removeCustomAlert() {
+    document.getElementsByTagName("body")[0].removeChild(document.getElementById("modalContainer"));
+}
+
+function ful() {
+    alert('Alert this pages');
+}
