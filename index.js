@@ -11,6 +11,7 @@ var cssNotification = '<style>#modalContainer {    background-color:rgba(0, 0, 0
 
 
 var styleToolbar = "<style>@import url('https://fonts.googleapis.com/css?family=Lexend+Deca&display=swap'); .total {  text-align: center; font-size: 30px; font-family: 'Lexend Deca', sans-serif; margin-left: 20px; display: flex; align-items: center; overflow: hidden; cursor: pointer; justify-content: space-between; white-space: nowrap; transition: 0.3s;}</style>";
+var styleModal = "<style .overlay {position: fixed;top: 0; bottom: 0;left: 0;right: 0;background: rgba(0, 0, 0, 0.7);transition: opacity 500ms;visibility: hidden;opacity: 0;}</style>"
 
 var toolbar = cssNotification + styleToolbar + '<div style="background: #232427;height: 90px;z-index: 999999999;">' +
     '<ul id="toolbar" style=" margin-top: 20px;font-size: 16px; color: #fff;">' +
@@ -18,9 +19,10 @@ var toolbar = cssNotification + styleToolbar + '<div style="background: #232427;
     '<img style="width: 80px;" id="imageLogo" src="https://uploaddeimagens.com.br/images/002/916/145/full/Prancheta_2_co%CC%81pia_2_%282%29.png?1602464003" /></li>' +
     '<li id="menuHistMark" class="menu2" style="float: left;margin-left: 20px;" title="#TITLEMENU2"> </li>' +
     '<li id="sellmrkbtn" class="menu2" style="float: left;margin-left: 20px;" title="#TITLEMENU2"> </li>' +
-    '<li class "menu2"title="#TITLEMENU2"> <span style="top:105px; left:540px; position: absolute;" class="total">Saldo<br/></span><span style="color: white; background: #09d261; position: absolute; top:105px; left: 640px;" class="total" id="balance">R$500,00</span> </li>' +
+    '<li class "menu2"title="#TITLEMENU2"> <span style="top:105px; left:540px; position: absolute;" class="total">Saldo<br/></span><span style="color: white; background: #09d261; position: absolute; top:105px; left: 640px;" class="total" id="balance">R$500,00</span> </li>' + 
     '</ul>' +
-    '</div>';
+    '</div>'+
+    '<div id="popup1" class="overlay"><div class="popup"><h2>Here i am</h2><a class="close" href="#">&times;</a><div class="content">Modal</div></div></div>';
 
 var lncbut = document.getElementsByTagName('body')[0];
 var lncbutDiv = document.createElement("div");
@@ -114,6 +116,7 @@ btnGenerateBillet.addEventListener("click", function (e) {
 
                 let url = JSON.parse(result);
                 alert("Boleto gerado, copie o link e envie ao cliente: " + url.link);
+
             }
         }
     };
@@ -307,10 +310,14 @@ function addSellButton() {
 
     // var dashButton = '<a type="button" class="container" style="width: 160px; position: absolute; top: 20px; left: 780px;"> <span class="new" style="color:#16171a; padding-top: 17px;">DashBoard</span> </a>';
 
-    var dashButton = '<div class="next"><a class="container new" style="width: 160px; position: absolute; top: 20px; left: 780px; color:#16171a; padding-top: 17px; height: 44px; display: inline; text-align: center;" href="#popup1">Dashboard</a></div>'
+    var dashButton = '<div class="next"><a class="container new" style="width: 160px; position: absolute; top: 20px; left: 780px; color:#16171a; padding-top: 17px; height: 44px; display: inline; text-align: center;" href="https://uploaddeimagens.com.br/images/002/916/556/original/a181c40e-1386-465a-b82c-c9371b84978f.jpeg?1602525921" target="blank">Dashboard</a></div>'
 
     startDashDiv.innerHTML = '<div class="titleText">' + dashButton + '</div>';
     startDashDiv.id = 'dashbuttonmrk';
+
+    startDashDiv.addEventListener("click", function (e) {
+
+    })
 
 
     startBtnDiv.innerHTML = '<div class="titleText">' + styleSell + buttonSell + '</div>';
