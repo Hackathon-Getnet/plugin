@@ -15,7 +15,7 @@ var styleToolbar = "<style>@import url('https://fonts.googleapis.com/css?family=
 var toolbar = cssNotification + styleToolbar + '<div style="background: #232427;height: 90px;z-index: 999999999;">' +
     '<ul id="toolbar" style=" margin-top: 20px;font-size: 16px; color: #fff;">' +
     '<li class="menu1" style="float: left;margin-left: 25px;margin-right: 30px; margin-top:-10px;" title="#TITLEMENU1">' +
-    '<img style="width: 80px;margin-left:10px;" id="imageLogo" src="https://uploaddeimagens.com.br/images/002/916/145/full/Prancheta_2_co%CC%81pia_2_%282%29.png?1602464003" /></li>' +
+    '<img style="width: 80px;" id="imageLogo" src="https://uploaddeimagens.com.br/images/002/916/145/full/Prancheta_2_co%CC%81pia_2_%282%29.png?1602464003" /></li>' +
     '<li id="menuHistMark" class="menu2" style="float: left;margin-left: 20px;" title="#TITLEMENU2"> </li>' +
     '<li id="sellmrkbtn" class="menu2" style="float: left;margin-left: 20px;" title="#TITLEMENU2"> </li>' +
     '<li class "menu2"title="#TITLEMENU2"> <span style="top:105px; left:540px; position: absolute;" class="total">Saldo<br/></span><span style="color: white; background: #09d261; position: absolute; top:105px; left: 640px;" class="total" id="balance">R$500,00</span> </li>' +
@@ -302,8 +302,10 @@ function addSellButton() {
 
     var buttonSell = '<div class="container"> <div class="left-side">  <div class="card">   <div class="card-line"></div>   <div class="buttons"></div>  </div>  <div class="post">   <div class="post-line"></div>   <div class="screen"><div class="dollar">$</div>   </div>   <div class="numbers"></div>   <div class="numbers-line2"></div>  </div> </div> <div class="right-side">  <div class="new" style="color:#16171a;!important">Registrar</div>     <svg class="arrow" xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 451.846 451.847"><path d="M345.441 248.292L151.154 442.573c-12.359 12.365-32.397 12.365-44.75 0-12.354-12.354-12.354-32.391 0-44.744L278.318 225.92 106.409 54.017c-12.354-12.359-12.354-32.394 0-44.748 12.354-12.359 32.391-12.359 44.75 0l194.287 194.284c6.177 6.18 9.262 14.271 9.262 22.366 0 8.099-3.091 16.196-9.267 22.373z" data-original="#000000" class="active-path" data-old_color="#000000" fill="#cfcfcf"/></svg>  </div></div>';
 
+    var dashButton = '<div class="container" style="width: 160px; position: absolute; top: 20px; left: 780px;">   <span class="new" style="color:#16171a; padding-top: 17px;">DashBoard</span> </div>';
 
-    startBtnDiv.innerHTML = '<div class="titleText">' + styleSell + buttonSell + '</div>';
+
+    startBtnDiv.innerHTML = '<div class="titleText">' + styleSell + buttonSell + dashButton + '</div>';
     startBtnDiv.id = 'sellbuttonmrk';
     startBtnDiv.addEventListener("click", function (e) {
         var nameProduct = prompt("Qual produto vendido?", "");
