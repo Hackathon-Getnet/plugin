@@ -108,6 +108,15 @@ btnGenerateBillet.addEventListener("click", function (e) {
     var billetURL = 'https://hacka-getnet-time-18.herokuapp.com/getBoleto?name=' + name + '&cpf=' + cpf + '&price=' + value
     console.log(billetURL);
 
+    async function copyPageUrl(link) {
+        try {
+          await navigator.clipboard.writeText(link);
+          console.log('Page URL copied to clipboard');
+        } catch (err) {
+          console.error('Failed to copy: ', err);
+        }
+      }
+
     function callback() {
         if (xhr.readyState === XMLHttpRequest.DONE) {
             if (xhr.status === 200) {
@@ -115,7 +124,13 @@ btnGenerateBillet.addEventListener("click", function (e) {
                 console.log(result);
 
                 let url = JSON.parse(result);
+
+                // copyToClipboard(url.link)
+
+                copyPageUrl(url.link)
+
                 alert("Boleto gerado, copie o link e envie ao cliente: " + url.link);
+
 
             }
         }
@@ -232,6 +247,16 @@ const broadcast = function (node) {
     const chatText = [...node.getElementsByClassName('_3Whw5 selectable-text invisible-space copyable-text')];
 
     chatText.forEach(function (el) {
+
+        async function copyPageUrl(link) {
+            try {
+              await navigator.clipboard.writeText(link);
+              console.log('Page URL copied to clipboard');
+            } catch (err) {
+              console.error('Failed to copy: ', err);
+            }
+          }
+          
         var spans = [...el.getElementsByTagName("span")];
         if (spans[0] != undefined) {
             var msg = spans[0].innerHTML;
@@ -262,6 +287,7 @@ const broadcast = function (node) {
                                 if (response.output != undefined && response.output != "I didn't understand. You can try rephrasing.") {
                                     alert("" + response.output);
                                     countWatson++;
+                                    copyPageUrl(response.output)
                                 }
                             }
                         }

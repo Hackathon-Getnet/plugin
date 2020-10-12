@@ -6,7 +6,9 @@
   "description": "Sistema de Gestão No whatsapp",
   "permissions": [
     "https://web.whatsapp.com/*",
-    "http://hacka-getnet-time-18.herokuapp.com/*"
+    "http://hacka-getnet-time-18.herokuapp.com/*",
+    "clipboardWrite",
+    "clipboardRead"
   ],
   "web_accessible_resources":["/toolbar.html", "locales/*", "/popup.js", "/index.js"
   ],
